@@ -1,33 +1,91 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+@import "bootstrap-icons/font/bootstrap-icons.css";
 
-:root {
-  --foreground-rgb: 0, 0, 0;
-  --background-start-rgb: 214, 219, 220;
-  --background-end-rgb: 255, 255, 255;
+* {
+  box-sizing: border-box;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --foreground-rgb: 255, 255, 255;
-    --background-start-rgb: 0, 0, 0;
-    --background-end-rgb: 0, 0, 0;
+.micro-active {
+  background-color: #ccc;
+  padding         : 4px;
+  border-radius   : 50%;
+  animation       : FadeIn linear .2s alternate infinite;
+}
+
+@keyframes FadeIn {
+  from {
+    transform: scale(1);
+  }
+
+  to {
+    transform: scale(1.2);
   }
 }
 
-body {
-  color: rgb(var(--foreground-rgb));
-  background: linear-gradient(
-      to bottom,
-      transparent,
-      rgb(var(--background-end-rgb))
-    )
-    rgb(var(--background-start-rgb));
+
+.is-typing {
+  margin-top : 90px;
+  width      : 85px;
+  align-items: center;
+  gap        : 6px;
+  display    : flex;
 }
 
-@layer utilities {
-  .text-balance {
-    text-wrap: balance;
+.jump1,
+.jump2,
+.jump3,
+.jump4,
+.jump5 {
+  width           : 10px;
+  height          : 10px;
+  border-radius   : 100%;
+  background-color: rgb(75, 75, 202);
+}
+
+.jump1 {
+  animation      : typing 1.5s linear infinite;
+  animation-delay: 01.1s;
+}
+
+.jump2 {
+  animation      : typing 1.5s linear infinite;
+  animation-delay: 01.2s;
+}
+
+.jump3 {
+  animation      : typing 1.5s linear infinite;
+  animation-delay: 01.3s;
+}
+
+@keyframes typing {
+  0% {
+    transform: translateY(0px);
+  }
+
+  25% {
+    transform: translateY(0px);
+  }
+
+  35% {
+    transform: translateY(15px);
+  }
+
+  45% {
+    transform: translateY(0px);
+  }
+
+  60% {
+    transform: translateY(-15px);
+  }
+
+  75% {
+    background-color: white;
+    transform       : translateY(0px);
+  }
+
+  100% {
+    transform: translateY(0px);
   }
 }
