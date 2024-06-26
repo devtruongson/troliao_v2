@@ -1,13 +1,13 @@
 export interface IAppState {
     is_welcome: boolean;
     updateIsWelcome: (is_welcome: boolean) => void;
-    data_chat: IResponse<any>[] ,
-    updateDataChat: (data : IResponse<any>) => void
+    data_chat: IResponse<any>[];
+    updateDataChat: (data: IResponse<any>) => void;
 }
 
-export interface IMessageUser  {
+export interface IMessageUser {
     is_ai: boolean;
-    data: string
+    data: string;
 }
 
 export interface IResponse<T> {
@@ -22,6 +22,7 @@ export interface IResponse<T> {
     is_point: boolean;
     is_video: boolean;
     is_audio: boolean;
+    is_unknown: boolean;
 }
 
 export interface IMarkDown {

@@ -11,6 +11,7 @@
   "dependencies": {
     "@ant-design/icons": "^5.3.6",
     "@ant-design/nextjs-registry": "^1.0.0",
+    "@google-cloud/text-to-speech": "^5.2.0",
     "@types/dom-speech-recognition": "^0.0.4",
     "antd": "^5.16.1",
     "bootstrap-icons": "^1.11.3",

@@ -3,10 +3,10 @@ import { TopChatHeading } from '../Welcome/Welcome';
 import { AudioOutlined, SendOutlined } from '@ant-design/icons';
 import { InputTypingEffect } from '../InputTypingEffect/InputTypingEffect';
 import ChatItem, { HelloUser } from '../ChatItem/ChatItem';
-import { ChangeEvent, useCallback, useEffect, useRef, useState } from 'react';
-import { IMessageUser, IResponse } from '@/utils/interface';
+import { ChangeEvent, useEffect, useRef, useState } from 'react';
 import { GetRuntimeAI } from '@/app/actions/action';
 import { useAppStore } from '@/stores/appStore';
+import { IResponse } from '@/utils/interface';
 
 const Chat: React.FC = () => {
     const [text, setText] = useState<string>('');
@@ -54,6 +54,7 @@ const Chat: React.FC = () => {
     };
 
     useEffect(() => {
+        // https://developer.mozilla.org/en-US/docs/Web/API/Web_Speech_API/Using_the_Web_Speech_API
         const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
         const recognition = new SpeechRecognition();
         refAudio.current = recognition;
@@ -93,8 +94,39 @@ const Chat: React.FC = () => {
             if (data.is_mark_down && !data.is_table) {
                 setText(data.data.content_mark_down);
             }
+            if (data.is_unknown || !data) {
+                const builderDataUnknown: IResponse<any> = {
+                    is_mark_down: true,
+                    is_ai: true,
+                    is_point: false,
+                    is_video: false,
+                    is_unknown: false,
+                    code: 200,
+                    match_query: 0,
+                    match_ai: 0,
+                    is_table: false,
+                    msg: 'ok',
+                    is_audio: false,
+                    data: {
+                        content_html: `
+                                <h2>Xin lỗi bot chưa hiểu ý của bạn</h2>
+                                <p>I.  Bạn có thể hỏi về</p>
+                                <ul>
+                                    <li>Điểm chuẩn</li>
+                                    <li>Địa điểm</li>
+                                    <li>Mã đăng ký xét tuyển</li>
+                                    <li>Các cơ sở đào tạo</li>
+                                    <li>Cơ sở vật chất</li>
+                                    <li>Thông tin khoa công nghệ thông tin</li>
+                                </ul>
+                            `,
+                    },
+                };
+                updateDataChat(builderDataUnknown);
+            } else {
+                updateDataChat(data);
+            }
             setIsLoading(false);
-            updateDataChat(data);
             setInputText('');
         };
         fetchAPI();
@@ -107,6 +139,19 @@ const Chat: React.FC = () => {
 
         setInputText(questionSuggest.trim());
     }, [questionSuggest]);
+
+    const handleKeyDown = (e: KeyboardEvent): void => {
+        if (e.keyCode === 13) {
+            handleSendMessage();
+        }
+    };
+
+    useEffect(() => {
+        window.addEventListener('keydown', handleKeyDown);
+        return () => window.removeEventListener('keydown', handleKeyDown);
+
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
 
     return (
         <div className="flex flex-col justify-between h-[100%] pb-3">
@@ -126,22 +171,9 @@ const Chat: React.FC = () => {
                 {data_chat &&
                     data_chat.length > 0 &&
                     data_chat.map((chatItem, index) => {
-                        console.log(chatItem);
                         return <ChatItem data={chatItem} key={index} />;
                     })}
-                {isLoading && (
-                    <div
-                        className="is-typing"
-                        style={{
-                            paddingBottom: 40,
-                            marginTop: 50,
-                        }}
-                    >
-                        <div className="jump1"></div>
-                        <div className="jump2"></div>
-                        <div className="jump3"></div>
-                    </div>
-                )}
+                {isLoading && <PendingResChatUser />}
                 <div ref={divRenderChat} />
             </div>
             <div
@@ -188,3 +220,19 @@ const Chat: React.FC = () => {
 };
 
 export default Chat;
+
+export const PendingResChatUser = () => {
+    return (
+        <div
+            className="is-typing"
+            style={{
+                paddingBottom: 40,
+                marginTop: 50,
+            }}
+        >
+            <div className="jump1"></div>
+            <div className="jump2"></div>
+            <div className="jump3"></div>
+        </div>
+    );
+};
