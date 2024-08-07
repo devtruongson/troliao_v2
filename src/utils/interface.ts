@@ -1,5 +1,7 @@
 export interface IAppState {
     is_welcome: boolean;
+    is_robox: boolean;
+    updateChangeRobox: (is_robox: boolean) => void;
     updateIsWelcome: (is_welcome: boolean) => void;
     data_chat: IResponse<any>[];
     updateDataChat: (data: IResponse<any>) => void;

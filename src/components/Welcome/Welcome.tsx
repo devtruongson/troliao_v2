@@ -3,7 +3,7 @@ import Image from 'next/image';
 import React, { useState } from 'react';
 import { IconMessenger, IconPhone, IconZalo } from '../Icons/icon';
 import { useAppStore } from '@/stores/appStore';
-import { Modal, Space, Switch } from 'antd';
+import { Button, Modal, Space, Switch, Tooltip } from 'antd';
 import { SettingOutlined } from '@ant-design/icons';
 
 export default function Welcome() {
@@ -109,17 +109,45 @@ export const TopChatHeading: React.FC<{
     dataMute,
 }) => {
     const [isOpen, setIsOpen] = useState<boolean>(false);
+    const { is_robox, updateChangeRobox } = useAppStore();
 
     return (
         <div className={`h-[${height}px] w-[100%] bg-[#5644b7] py-[12px] pb-[20px] relative`}>
-            {is_show_setting && (
-                <SettingOutlined
-                    onClick={() => {
-                        setIsOpen(true);
-                    }}
-                    className="bg-[#fff] p-1 rounded-[50%] absolute right-[10px] cursor-pointer"
-                />
-            )}
+            <Space className="absolute right-[10px] cursor-pointer">
+                {/* <Tooltip title="Trả lời các câu hỏi về nhà trường!">
+                    <Button
+                        type={is_robox ? 'primary' : 'default'}
+                        onClick={() => {
+                            updateChangeRobox(true);
+                        }}
+                    >
+                        Trợ Lí Ảo Robox Uneti
+                    </Button>
+                </Tooltip> */}
+                {/* <Tooltip title="Trả lời tất các câu hỏi nó trông như một GPT Của Uneti 😘">
+                    <Button
+                        type={!is_robox ? 'primary' : 'default'}
+                        onClick={() => {
+                            updateChangeRobox(false);
+                        }}
+                    >
+                        Trợ Lí Ảo UnetiGPT
+                    </Button>
+                </Tooltip> */}
+                {is_show_setting && (
+                    <>
+                        <span className="text-[12px] mr-2 opacity-[0.7]">
+                            Author by <a href="https://www.facebook.com/tsondev0911">Trường Sơn</a>
+                        </span>
+                        <SettingOutlined
+                            onClick={() => {
+                                setIsOpen(true);
+                            }}
+                            className="bg-[#fff] p-1 rounded-[50%]"
+                        />
+                    </>
+                )}
+            </Space>
             <div className="h-[100%] px-[20px]">
                 <div className="flex gap-[6px] items-center">
                     <Image
@@ -129,7 +157,7 @@ export const TopChatHeading: React.FC<{
                         height={100}
                         className="object-contain w-[60px] h-[60px]"
                     />
-                    <span className="text-[#fff] font-[600]">Xin chào 👋</span>
+                    <span className="text-[#fff] font-[600]">{is_robox ? 'Robox Uneti' : 'UnetiGPT'} xin chào 👋</span>
                 </div>
                 <div>
                     <h2 className="italic text-[#fff]">
